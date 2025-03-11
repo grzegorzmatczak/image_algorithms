@@ -14,7 +14,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
+#file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
 
 
 if (WIN32)
@@ -26,13 +26,12 @@ endif (WIN32)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(OpenCV REQUIRED)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-MESSAGE(STATUS "Include dirs ${OpenCV_INCLUDE_DIRS}")
-MESSAGE(STATUS "LINK LIBRARIES ${OpenCV_LIBS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 include_directories( "src" )
 include_directories( "include" )
-
+include_directories( "../utils2/src" )
+include_directories( "../utils2/include" )
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
@@ -54,17 +53,21 @@ set(SRC_HEADERS_TEST
 
 include(GNUInstallDirs)
 
-add_library(${PROJECT_NAME}_lib STATIC
+add_library(${PROJECT_NAME} STATIC
     ${SRC} ${HEADERS})
 
 
-target_link_libraries(${PROJECT_NAME}_lib Qt::Core Threads::Threads ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME}
+    Qt::Core
+    Threads::Threads
+    ${OpenCV_LIBS}
+)
 
-install(TARGETS ${PROJECT_NAME}_lib
+install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     
-install(TARGETS ${PROJECT_NAME}_lib EXPORT ${PROJECT_NAME}Config
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -75,4 +78,4 @@ MESSAGE(STATUS "CMAKE_INSTALL_LIBDIR: ${CMAKE_INSTALL_LIBDIR}")
 MESSAGE(STATUS "CMAKE_INSTALL_BINDIR: ${CMAKE_INSTALL_BINDIR}")
 
 add_executable(${PROJECT_NAME}_test ${SRC_HEADERS_TEST})
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib gtest gmock)
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} gtest gmock)

@@ -12,7 +12,7 @@ namespace gtest_medianfilter
         QElapsedTimer timer;
         timer.start();
         // cv::Mat
-        cv::Mat frame = cv::Mat(500, 500, CV_8UC1, cv::Scalar(0));
+        cv::Mat frame = cv::Mat(100, 100, CV_8UC1, cv::Scalar(0));
         MedianFilter* imgMedianObj = new MedianFilter(frame, 11);
         int x = 0;
         int y = 0;

@@ -1,3 +1,4 @@
-.vscode/settings.json
 build/*
-gt-cppcheck-build-dir/*
+.vs/*
+out/*
+install/*
